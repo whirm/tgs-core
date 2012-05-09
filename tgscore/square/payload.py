@@ -1,6 +1,6 @@
 from time import time
 from datetime import datetime
-from dispersy.payload import Payload
+from ..dispersy.payload import Payload
 
 class MemberInfoPayload(Payload):
     class Implementation(Payload.Implementation):

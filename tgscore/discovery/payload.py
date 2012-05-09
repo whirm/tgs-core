@@ -1,4 +1,4 @@
-from dispersy.payload import Payload
+from ..dispersy.payload import Payload
 
 class HotsPayload(Payload):
     class Implementation(Payload.Implementation):

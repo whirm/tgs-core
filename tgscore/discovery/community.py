@@ -5,21 +5,21 @@ from random import sample, random
 from conversion import Conversion
 from payload import HotsPayload, SearchMemberRequestPayload, SearchSquareRequestPayload, SearchTextRequestPayload, SearchMemberResponsePayload, SearchSquareResponsePayload, SearchTextResponsePayload
 
-from square.community import PreviewCommunity
-from square.database import SquareDatabase
+from ..square.community import PreviewCommunity
+from ..square.database import SquareDatabase
 
-from dispersy.authentication import NoAuthentication
-from dispersy.community import Community
-from dispersy.conversion import DefaultConversion
-from dispersy.destination import CommunityDestination, CandidateDestination
-from dispersy.distribution import DirectDistribution
-from dispersy.member import DummyMember
-from dispersy.message import Message, DropMessage
-from dispersy.requestcache import Cache
-from dispersy.resolution import PublicResolution
+from ..dispersy.authentication import NoAuthentication
+from ..dispersy.community import Community
+from ..dispersy.conversion import DefaultConversion
+from ..dispersy.destination import CommunityDestination, CandidateDestination
+from ..dispersy.distribution import DirectDistribution
+from ..dispersy.member import DummyMember
+from ..dispersy.message import Message, DropMessage
+from ..dispersy.requestcache import Cache
+from ..dispersy.resolution import PublicResolution
 
 if __debug__:
-    from dispersy.dprint import dprint
+    from ..dispersy.dprint import dprint
 
 class Suggestion(object):
     def __init__(self, cid, mid, global_time):

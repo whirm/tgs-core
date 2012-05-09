@@ -1,5 +1,5 @@
 if __debug__:
-    from dispersy import dprint
+    from ..dispersy import dprint
 
 class State(object):
     def __init__(self, previous_state):

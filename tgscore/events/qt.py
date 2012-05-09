@@ -3,7 +3,7 @@
 
 from PyQt4.QtCore import QObject, SIGNAL, pyqtSignal
 
-from square.community import SquareCommunity, PreviewCommunity
+from ..square.community import SquareCommunity, PreviewCommunity
 
 _global_broker = None
 

@@ -1,7 +1,7 @@
 from struct import pack, unpack_from
 
-from dispersy.conversion import BinaryConversion
-from dispersy.message import DropPacket
+from ..dispersy.conversion import BinaryConversion
+from ..dispersy.message import DropPacket
 
 class Conversion(BinaryConversion):
     def __init__(self, community):

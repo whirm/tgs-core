@@ -1,6 +1,6 @@
 from os import path
 
-from dispersy.database import Database
+from ..dispersy.database import Database
 
 LATEST_VERSION = 1
 

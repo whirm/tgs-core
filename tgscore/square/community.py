@@ -6,17 +6,17 @@ from database import SquareDatabase
 from payload import MemberInfoPayload, SquareInfoPayload, TextPayload
 from state import DummyState, UnknownState, SquareState, TaskGroupState
 
-from dispersy.authentication import MemberAuthentication
-from dispersy.community import Community
-from dispersy.conversion import DefaultConversion
-from dispersy.destination import CommunityDestination
-from dispersy.dispersy import MissingMessageCache, MissingLastMessageCache, CANDIDATE_WALKER_CALLBACK_ID
-from dispersy.distribution import FullSyncDistribution, LastSyncDistribution
-from dispersy.member import DummyMember
-from dispersy.message import Message
-from dispersy.resolution import DynamicResolution, PublicResolution, LinearResolution
+from ..dispersy.authentication import MemberAuthentication
+from ..dispersy.community import Community
+from ..dispersy.conversion import DefaultConversion
+from ..dispersy.destination import CommunityDestination
+from ..dispersy.dispersy import MissingMessageCache, MissingLastMessageCache, CANDIDATE_WALKER_CALLBACK_ID
+from ..dispersy.distribution import FullSyncDistribution, LastSyncDistribution
+from ..dispersy.member import DummyMember
+from ..dispersy.message import Message
+from ..dispersy.resolution import DynamicResolution, PublicResolution, LinearResolution
 if __debug__:
-    from dispersy.dprint import dprint
+    from ..dispersy.dprint import dprint
 
 class Member(object):
     __slots__ = ["square", "sync_id", "member_id", "alias", "thumbnail_hash"]
@@ -462,5 +462,5 @@ class PreviewCommunity(SquareBase):
         # allow responses, otherwise we will not be able to enable/disable the walker on demand
         return True
 
-
-from events import getEventBroker
+#TODO: Remove this, deprecated
+from ..events import getEventBroker
