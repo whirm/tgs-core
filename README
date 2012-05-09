@@ -53,6 +53,51 @@ Extract from a chat with eviy:
 175851  +eviy  whirm: you copy the public key (they are HEX encoded) and put it in ChatCore.dispersy
 175904  +eviy  whirm: replace 'public_key = "3081a7301006072a8648ce3d020...' with the new key
 
+#About new searching code:
+
+@eviy	i made two small classes (Text, Member) that only contain info, no dispersy related stuff
+@eviy	that should make it easier to use them in the gui
+@eviy	see square/community.py Text and Member (at the top of the file)
+
+@eviy	second point: the discovery community has simple_[text,member,square]_search methods
+@eviy	these will allow a sinple search string to be performed on external nodes, these nodes will give back CID+MID+global-time for each hit
+@eviy	the discovery community will load PreviewCommunities to obtain the most interesting hits automatically
+
+@eviy	the simple_[...]_search requires a response_func, this is called with the following:
+
+@eviy	response_func(search_cache_object, "suggestion") when one or more CID+MID+global-time pairs are received
+@eviy	response_func(search_cache_object, "hit") when one of the CID+MID+global-time pairs is translated into a Message, Member, or Square
+@eviy	response_func(search_cache_object, "finishes") when no more results will be accepted, i.e. the search is done
+@eviy	"finished" is called after TIMEOUT seconds.  this is a parameter of simple_[...]_search method, default 10.0
+
+@eviy	the suggestions and hits are available in the search_cache_object (see discovery/community SearchCache class)
+@eviy	search_cache_object.suggestions is a list with suggestions, it is ordered by how many hits it got and how important the other nodes thought they are to my search query
+@eviy	---
+@eviy	now for the fun bit :p
+@eviy	the cache object gets updated, there is one for each search
+@eviy	i.e. you can have multiple searches and search objects in parallel
+
++whirm	so the callback will get fired multiple times, but passing the same cache object every time
+@eviy	for instance if you want to search for both Text and Square with the term 'eviy is awsome' you will need to run two searched, one for each
+@eviy	whirm: exactly
+@eviy	and the UI should basically show the top N in search_cache_object.suggestions
+@eviy	currently the top 10 are suggestions are downloaded.  but every time suggestions are received a new top 10 is calculated, so perhaps more will be downloaded
+@eviy	we can tweak this a bit, add manual download or something...
+@eviy	search_cache_object.suggestions[INDEX].state can be either "waiting", "fetching", or "done"
+@eviy	when "done" search_cache_object.suggestions[INDEX].hit will be either a Square, Member, Text depending on what the search was
+
+@eviy	example:
+@eviy	1. user types search term and GUI calls the simple_text_search
+@eviy	2. GUI shows a window with 0 results
+@eviy	3. response_func(cache, "suggestion") is called
+@eviy	4. GUI shows all items in cache.suggestions that have state="fetching", indicating to the user that these are being downloaden
+@eviy	5. response_func(cache, "suggestion") is called again, and again, each time responses are received, GUI updates accordingly (point 4)
+@eviy	6. response_func(cache, "hit") is called
+@eviy	7. GUI shows all items in cache.suggestions that have state="fetching", as before, but now some items will have state="done".  these suggestions will also have a property hit, this is a Text object with a member, text, media hash, etc
+
+@eviy	6. response_func(cache, "hit") is called again, and again, once for each suggestion that is download.  note that response_func(cache, "suggestion") can still be called at this time
+@eviy	7. response_func(cache, "finished") is called after TIMEOUT seconds and no more calls will be made
+@eviy	that, in a nutshell, is our search engine :p
 
 ##############################
 # Notes about the icons used #
