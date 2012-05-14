@@ -452,7 +452,8 @@ class DiscoveryCommunity(Community):
             if suggestions:
                 responses.append(meta.impl(distribution=(self.global_time,), destination=(message.candidate,), payload=(payload.identifier, suggestions)))
 
-        self._dispersy.store_update_forward(responses, False, False, True)
+        if responses:
+            self._dispersy.store_update_forward(responses, False, False, True)
 
     def on_search_text_request(self, messages):
         execute = self._database.execute
