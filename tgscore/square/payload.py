@@ -66,7 +66,7 @@ class TextPayload(Payload):
     class Implementation(Payload.Implementation):
         def __init__(self, meta, member_info, text, media_hash, utc_timestamp):
             if __debug__:
-                from dispersy.message import Message
+                from ..dispersy.message import Message
             assert isinstance(member_info, Message.Implementation), member_info
             assert isinstance(text, unicode), text
             assert len(text.encode("UTF-8")) < 1024, text
