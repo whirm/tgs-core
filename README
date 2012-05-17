@@ -2,8 +2,7 @@
 # Important Stuff! #
 ####################
 
-Before starting the app, you will need to execute the build_resources.sh script once
-and every time any file in the ui/ dir gets updated by you or by a git pull.
+Remember to do a "git submodule init" and "git submodule update" to fetch the lastest dispersy code as a submodule.
 
 Cheers.
 
