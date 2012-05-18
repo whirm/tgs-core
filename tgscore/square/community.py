@@ -361,7 +361,7 @@ LIMIT 100"""
 
                 else:
                     if __debug__: dprint("fetching message")
-                    self._dispersy.create_missing_message_newstyle(self, source, member, global_time, response_func, response_args, timeout)
+                    self._dispersy.create_missing_message(self, source, member, global_time, response_func, response_args, timeout)
 
         else:
             if __debug__: dprint("fetching identity")
