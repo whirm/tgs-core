@@ -18,6 +18,13 @@ from ..dispersy.resolution import DynamicResolution, PublicResolution, LinearRes
 if __debug__:
     from ..dispersy.dprint import dprint
 
+def call_on_dispersy_thread(func):
+    def check_thread(self, *args, **kargs):
+        assert hasattr(self, "dispersy")
+        assert hasattr(self.dispersy, "callback")
+        return self.dispersy.callback.call(func, args, kargs)
+    return check_thread
+
 class Member(object):
     __slots__ = ["square", "sync_id", "member_id", "alias", "thumbnail_hash"]
 
@@ -192,6 +199,7 @@ LIMIT 100"""
         else:
             self._state = UnknownState(self._state)
 
+    @call_on_dispersy_thread
     def convert_to_task_group(self):
         # TODO this check should be done in dispersy.py
         meta = self._meta_messages[u"dispersy-dynamic-settings"]
@@ -204,6 +212,7 @@ LIMIT 100"""
         self._dispersy.create_dynamic_settings(self, policies)
         self._dispersy.reclassify_community(self, TaskGroup)
 
+    @call_on_dispersy_thread
     def set_my_member_info(self, name, thumbnail_hash):
         if not (isinstance(name, unicode) and len(name.encode("UTF-8")) < 256):
             raise ValueError("invalid name")
@@ -249,6 +258,7 @@ LIMIT 100"""
     def undo_member_info(self, *args):
         pass
 
+    @call_on_dispersy_thread
     def set_square_info(self, title, description, thumbnail_hash, location, radius):
         if not (isinstance(title, unicode) and len(title.encode("UTF-8")) < 256):
             raise ValueError("invalid title")
@@ -296,6 +306,7 @@ LIMIT 100"""
     def undo_square_info(self, *args):
         pass
 
+    @call_on_dispersy_thread
     def post_text(self, text, media_hash):
         if self._my_member_info is None:
             self.set_my_member_info(self._my_alias, self._my_thumbnail_hash)

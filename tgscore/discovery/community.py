@@ -21,6 +21,13 @@ from ..dispersy.resolution import PublicResolution
 if __debug__:
     from ..dispersy.dprint import dprint
 
+def call_on_dispersy_thread(func):
+    def check_thread(self, *args, **kargs):
+        assert hasattr(self, "dispersy")
+        assert hasattr(self.dispersy, "callback")
+        return self.dispersy.callback.call(func, args, kargs)
+    return check_thread
+
 class Suggestion(object):
     def __init__(self, cid, mid, global_time):
         self.cid = cid
@@ -292,11 +299,13 @@ class DiscoveryCommunity(Community):
     def top_texts(self):
         return self._hot_collector.top_texts
 
+    @call_on_dispersy_thread
     def add_explicitly_hot_text(self, message):
         # TODO all messages should be unique
         self._explicitly_hot_text.append(message)
         del self._explicitly_hot_text[20:]
 
+    @call_on_dispersy_thread
     def add_implicitly_hot_text(self, messages):
         # TODO all messages should be unique
         self._implicitly_hot_text.extend(messages)
@@ -334,6 +343,7 @@ class DiscoveryCommunity(Community):
         pairs = [(min(len(keyword), 127), keyword) for keyword in string.split()]
         return self.text_search(pairs, [], 1, response_func, response_args, timeout)
 
+    @call_on_dispersy_thread
     def member_search(self, terms, squares, threshold, response_func, response_args=(), timeout=10.0):
         cache = SearchCache(self, terms, squares, threshold, response_func, response_args, timeout)
         identifier = self._dispersy.request_cache.claim(cache)
@@ -347,6 +357,7 @@ class DiscoveryCommunity(Community):
 
         return cache
 
+    @call_on_dispersy_thread
     def square_search(self, terms, squares, threshold, response_func, response_args=(), timeout=10.0):
         cache = SearchCache(self, terms, squares, threshold, response_func, response_args, timeout)
         identifier = self._dispersy.request_cache.claim(cache)
@@ -360,6 +371,7 @@ class DiscoveryCommunity(Community):
 
         return cache
 
+    @call_on_dispersy_thread
     def text_search(self, terms, squares, threshold, response_func, response_args=(), timeout=10.0):
         cache = SearchCache(self, terms, squares, threshold, response_func, response_args, timeout)
         identifier = self._dispersy.request_cache.claim(cache)
