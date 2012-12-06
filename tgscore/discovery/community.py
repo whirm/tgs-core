@@ -22,10 +22,11 @@ if __debug__:
     from ..dispersy.dprint import dprint
 
 def call_on_dispersy_thread(func):
-    def check_thread(self, *args, **kargs):
-        assert hasattr(self, "dispersy")
-        assert hasattr(self.dispersy, "callback")
-        return self.dispersy.callback.call(func, args, kargs)
+    def check_thread(*args, **kargs):
+        assert len(args) >= 1, len(args) # must have at least one parameter (i.e. self)
+        assert hasattr(args[0], "dispersy")
+        assert hasattr(args[0].dispersy, "callback")
+        return args[0].dispersy.callback.call(func, args, kargs)
     return check_thread
 
 class Suggestion(object):
