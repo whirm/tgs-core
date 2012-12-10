@@ -390,10 +390,8 @@ LIMIT 100"""
                 else:
                     candidate = hot.sources.pop(0)
                     self._dispersy.create_missing_message(self, candidate, member, hot.global_time)
-
         else:
             self._dispersy.create_missing_identity(self, hot.sources[0], DummyMember(hot.mid))
-
 
     def has_dependencies(self):
         return self._dependencies > 0
