@@ -182,6 +182,7 @@ class HotCollector(SuggestionRepository):
         super(HotCollector, self).__init__(discovery)
         self.top_squares = []
         self.top_texts = []
+        self.events = getEventBroker(None)
 
     @property
     def enable_walker(self):
@@ -221,7 +222,8 @@ class HotCollector(SuggestionRepository):
             for index, square in enumerate(self.top_squares):
                 dprint("#", index, " - ", square)
 
-        # TODO notify GUI that there are new top squares and texts
+        dprint("Notifying the UI about the hotlists update...", line=1, force=1)
+        self.events.newHotCommunitiesAvailable(self.top_squares, self.top_texts)
 
 class SearchCache(SuggestionRepository, Cache):
     cleanup_delay = 180.0
@@ -504,3 +506,5 @@ class DiscoveryCommunity(Community):
             else:
                 yield weight, str(cid), str(mid), global_time
 
+#TODO: Remove this, deprecated
+from ..events import getEventBroker
