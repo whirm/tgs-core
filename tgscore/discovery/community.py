@@ -222,7 +222,7 @@ class HotCollector(SuggestionRepository):
             for index, square in enumerate(self.top_squares):
                 dprint("#", index, " - ", square)
 
-        dprint("Notifying the UI about the hotlists update...", line=1, force=1)
+        dprint("Notifying the UI about the hotlists update.")
         self.events.newHotCommunitiesAvailable(self.top_squares, self.top_texts)
 
 class SearchCache(SuggestionRepository, Cache):
